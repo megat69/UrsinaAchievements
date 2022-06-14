@@ -113,7 +113,7 @@ class Achievement(Entity):
 		invoke(destroy, self, delay=5 * importance)
 
 
-def update():
+def _achievements_update():
 	"""
 	Checks if the achievement condition is met at each update.
 	"""
@@ -136,6 +136,7 @@ def update():
 	for i in range(len(pop)):
 		_achievements_list.pop(pop[i] - i)
 
+Entity(update=_achievements_update)
 
 if __name__ == "__main__":
 	app = Ursina()
