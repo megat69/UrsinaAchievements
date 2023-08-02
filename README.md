@@ -44,3 +44,20 @@ Sky()
 
 app.run()
 ```
+
+## Customisation
+You can customise the appearance of the achievement by importing the Achievement class and modifying the following variables associated with it:
+- `Achievement.achievement_color`
+- `Achievement.text_color`
+- `Achievement.icon_color`
+
+They correspond to a tuple of three integer values.
+
+## Features & Todos
+- [x] Popups at the bottom-right corner of the screen
+  - Contains an achievement name
+  - An icon
+- [x] Every frame, each function given for the argument check is tested ; achievement is given if the function tests true
+- [x] All gotten achievements are stored in a JSON file
+- [ ] An HTML file is generated with every achievement you got
+- [ ] The function used for creating the achievements can be used as a decorator
