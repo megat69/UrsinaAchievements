@@ -1,7 +1,7 @@
 # More information
 A simple library for creating achievements for the Ursina game engine.
 
-*Note : This library is used in [Rally](https://mandaw2014.itch.io/rally) by [Mandaw2014](https://github.com/mandaw2014/). The library usage is shown in [the game's fourth devlog.](https://www.youtube.com/watch?v=Akqf1_ethQ8)*
+*Note : This library is used in the [Rally](https://mandaw2014.itch.io/rally) game created by [Mandaw2014](https://github.com/mandaw2014/). The library usage is shown in [the game's fourth devlog.](https://www.youtube.com/watch?v=Akqf1_ethQ8)*
 
 ## How to use the library
 To use this library, first download this repository, and add the UrsinaAchievements folder to your game's main folder.
