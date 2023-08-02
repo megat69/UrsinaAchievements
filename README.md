@@ -1,47 +1,46 @@
 # UrsinaAchievements
-A simple WIP library allowing you to create achievements for the Ursina game engine !
+A simple library for creating achievements for the Ursina game engine.
 
 *Note : the library is currently pretty barebones, but it is still usable, as seen in the game [Rally](https://mandaw2014.itch.io/rally) by [Mandaw2014](https://github.com/mandaw2014/). The library usage is shown in [the game's fourth devlog.](https://www.youtube.com/watch?v=Akqf1_ethQ8)*
 
-## Library usage
-To use the library, first download this repo, and add the UrsinaAchievements folder to your game's main folder.
+## How to use the library
+To use this library, first download this repository, and add the UrsinaAchievements folder to your game's main folder.
 
 Then, in your main file, import the `create_achievement` function.
 ```python
 from UrsinaAchievements import create_achievement
 ```
 
-You can now create achievements by calling the function, with the following parameters :
-- `name` (str) : The name of the achievement.
-- `unlock_condition` : A callback function representing whether the achievement should be unlocked.
-  - Unlocks the achievement if the return value is True, passes if it is either False or None.
-- `icon` (str, None by default) : The path to the image file being represented with the text, optional.
-- `ringtone` (str, "clicking" by default) : The name of the ringtone to be used to signal the achievement get.
-  - Can be "clicking", "subtle", "uplifting" or the path to a wav/ogg file. 
-  - It can also be None, and thus won't produce a sound.
-- `importance` (int/float, default is 1) : The higher the number is, the longer the achievement will stay on screen.
+This function takes several parameters into account.
+- `name` (str) : Name of the achievement.
+- `condition` : Callback function representing the condition under which the achievement must be unlocked.
+  - Unlocks the achievement if the returned value is True and passes if the returned value is either False or None.
+- `icon` (str, None by default) : The path to the image of your choice that will represent your achievement. (optional)
+- `sound` (str, "sudden" by default) : Name of the sound used to signal the achievement get.
+  - This could be "ringing", "rising", "sudden" or the path to a WAV format file.
+- `duration` (float, 1 by default) : Time during which the achievement will be displayed on screen.
 
 For example :
 ```python
 from ursina import *
 from UrsinaAchievements import create_achievement
 
-app = Ursina()
+app = Ursina(borderless = False, fullscreen = True, development_mode = False)
 
-Sky()
 do = False
 
 def cond():
-  global do
-  return do
-  
-create_achievement("Bubbles.", cond, "bubbles.png", "subtle")
+    global do
+    return do
+
+create_achievement(name = 'Welcome!', condition = cond, icon = 'confetti', sound = 'sudden', duration = 1.5)
 
 def setdo():
-  global do
-  do = True
-  
-invoke(setdo, delay=2)
+    global do
+    do = True
+invoke(setdo, delay = 3)
+
+Sky()
 
 app.run()
 ```
