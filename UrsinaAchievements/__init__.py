@@ -58,11 +58,22 @@ def create_achievement(
 	)
 
 
-def add_achievement(
+def achievement(
 	name: str, icon: Optional[str] = None,
 	sound: Union[Literal["sign", "sudden", "ringing", "rising"], str] = 'sudden',
 	duration: Union[float, int] = 1
 ):
+	"""
+	Easy way to create an achievement.
+	Please define below the decorator a function that will be called every frame to check if the achievement was gotten.
+	The achievement will be triggered if the function returns True, and skipped if False or None.
+	:param name: The short name of the achievement.
+	:param icon: A path to the achievement's icon. If None, no icon will appear for the achievement.
+	:param sound: Name of the sound used to signal the achievement get.
+		This could be "ringing", "rising", "sign", "sudden" or the path to a WAV format file.
+	:param duration: How long the achievement should stay on screen. Please note that this is a multiplier, not a value
+		in seconds.
+	"""
 	def wrap(condition):
 		create_achievement(name, condition, icon, sound, duration)
 	return wrap
@@ -192,23 +203,29 @@ if __name__ == '__main__':
 
 	app = Ursina()
 
-	do = False
+	do1 = False
+	do2 = False
 
-	"""def cond():
-		global do
-		return do
+	def cond():
+		global do1
+		return do1
 
-	create_achievement(name = 'Welcome!', condition = cond, icon = 'textures/confetti.png', sound = 'sudden', duration = 1.5)"""
+	create_achievement(name = 'Welcome!', condition = cond, icon = 'textures/confetti.png', sound = 'sudden', duration = 1.5)
 
-	@add_achievement("Welcome!", "textures/confetti.png", "sudden", 1.5)
+	@achievement("Blup!", "textures/bubbles.png", "sign", 1)
 	def condition():
 		global do
 		return do
 
-	def setdo():
-		global do
-		do = True
-	invoke(setdo, delay = 3)
+	@after(1.5)
+	def setdo1():
+		global do1
+		do1 = True
+
+	@after(5)
+	def setdo2():
+		global do2
+		do2 = True
 
 	Sky()
 
