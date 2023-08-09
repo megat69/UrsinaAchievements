@@ -2,18 +2,20 @@ from ursina import *
 import os
 import json
 from direct.stdpy import thread
-from typing import Callable, Optional, Union, Literal
+from typing import Callable, Optional, Union, Literal, List
+from collections import namedtuple
 
 _path = os.path.dirname(os.path.abspath(__file__))
 
-_achievements_list = []
+_achievement_type = namedtuple("AchievementType", ["name", "condition", "icon", "sound", "duration"])
+_achievements_list: List[_achievement_type] = []
 
 try:
 	with open(f'{_path}/achievements.json', 'r', encoding = 'utf-8') as save_file:
-		_achievements_got = json.load(save_file)['achievements_got_names'].copy()
+		_achievements_got: List[_achievement_type] = json.load(save_file)['achievements_got_names'].copy()
 except FileNotFoundError:
 	with open(f'{_path}/achievements.json', 'w', encoding = 'utf-8') as save_file:
-		_achievements_got = []
+		_achievements_got: List[_achievement_type] = []
 		json.dump({'achievements_got_names': []}, save_file, indent = 4)
 
 
@@ -52,7 +54,7 @@ def create_achievement(
 
 	# Adds the achievement to the list of achievements
 	_achievements_list.append(
-		(name, condition, icon, sound, duration)
+		_achievement_type(name, condition, icon, sound, duration)
 	)
 
 
@@ -150,13 +152,13 @@ def _achievements_update():
 	# Loops for each achievement possible
 	for i, achievement in enumerate(_achievements_list):
 		# If the achievement should be triggered
-		if achievement[1]() is True and achievement[0] not in _achievements_got:
+		if achievement.condition() is True and achievement.name not in _achievements_got:
 			# Logs the achievement name and triggers the graphic
-			print(f"You've just achieved: {achievement[0]}")
-			Achievement(* achievement)
+			print(f"You've just achieved: {achievement.name}")
+			Achievement(*achievement)
 
 			# Adds the achievement name to the list of achievements got
-			_achievements_got.append(achievement[0])
+			_achievements_got.append(achievement.name)
 
 			# Removes the achievement from the list of achievements to check
 			pop.append(i)
