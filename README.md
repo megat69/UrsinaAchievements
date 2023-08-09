@@ -17,7 +17,7 @@ This function takes several parameters into account.
   - Unlocks the achievement if the returned value is True and passes if the returned value is either False or None.
 - `icon` (str, None by default) : The path to the image of your choice that will represent your achievement. (optional)
 - `sound` (str, "sudden" by default) : Name of the sound used to signal the achievement get.
-  - This could be "ringing", "rising", "sudden" or the path to a WAV format file.
+  - This could be "ringing", "rising", "sign", "sudden" or the path to a WAV format file.
 - `duration` (float, 1 by default) : Time during which the achievement will be displayed on screen.
 
 For example :
