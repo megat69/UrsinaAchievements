@@ -123,9 +123,20 @@ class Achievement(Entity):
 
 
 def _achievements_update():
+	"""
+	Internal function.
+	Gets called every frame to check for each achievement if it was triggered.
+	If so, will show a pop-up to the user.
+	"""
+	# Creates an empty list of achievements to pop after they have been triggered.
+	# Since an achievement will never be triggered twice, this leads to a small memory/performance gain.
 	pop = []
+
+	# Loops for each achievement possible
 	for i, achievement in enumerate(_achievements_list):
+		# If the achievement should be triggered
 		if achievement[1]() is True and achievement[0] not in _achievements_got:
+			# Logs the achievement name and triggers the graphic
 			print(f"You've just achieved: {achievement[0]}")
 			Achievement(* achievement)
 
@@ -142,10 +153,12 @@ def _achievements_update():
 			except Exception as error:
 				print('error when saving achievement: ', error)
 
+	# Removes the triggered achievements from the list of all future possible achievements.
 	for i in range(len(pop)):
 		_achievements_list.pop(pop[i] - i)
 
 
+# Makes sure the update method gets called every frame
 Entity(update = _achievements_update)
 
 if __name__ == '__main__':
