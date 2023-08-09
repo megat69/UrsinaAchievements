@@ -29,10 +29,11 @@ def _save_achievements():
 class Achievement(Entity):
 
 	# Sounds
+	sign = Audio('sounds/sign.wav', autoplay = False, loop = False)
 	sudden = Audio('sounds/sudden.wav', autoplay = False, loop = False)
 	ringing = Audio('sounds/ringing.wav', autoplay = False, loop = False)
 	rising = Audio('sounds/rising.wav', autoplay = False, loop = False)
-	sounds = [sudden, ringing, rising]
+	sounds = [sign, sudden, ringing, rising]
 	
 	achievement_color = (64, 64, 64)
 	text_color = (255, 255, 255)
