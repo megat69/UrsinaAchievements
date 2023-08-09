@@ -2,6 +2,7 @@ from ursina import *
 import os
 import json
 from direct.stdpy import thread
+from typing import Callable, Optional, Union, Literal
 
 _path = os.path.dirname(os.path.abspath(__file__))
 
@@ -16,27 +17,45 @@ except FileNotFoundError:
 		json.dump({'achievements_got_names': []}, save_file, indent = 4)
 
 
-def create_achievement(name: str, condition, icon: str = None, sound: str = 'sudden', duration: int = 1):
+def _save_achievements():
+	"""
+	Internal function.
+	Saves the achievements to a file.
+	"""
+	with open(f'{_path}/achievements.json', 'w', encoding = 'utf-8') as save_file:
+		json.dump({'achievements_got_names': _achievements_got.copy()}, save_file, indent = 2)
 
+
+def create_achievement(
+	name: str, condition: Callable[[], Optional[bool]], icon: Optional[str] = None,
+	sound: Union[Literal["sign", "sudden", "ringing", "rising"], str] = 'sudden',
+	duration: Union[float, int] = 1
+):
+	"""
+	Easy way to create an achievement.
+	:param name: The short name of the achievement.
+	:param condition: A callback function that will be called every frame to check if the achievement was gotten.
+		The achievement will be triggered if the function returns True, and skipped if False or None.
+	:param icon: A path to the achievement's icon. If None, no icon will appear for the achievement.
+	:param sound: Name of the sound used to signal the achievement get.
+		This could be "ringing", "rising", "sign", "sudden" or the path to a WAV format file.
+	:param duration: How long the achievement should stay on screen. Please note that this is a multiplier, not a value
+		in seconds.
+	"""
 	_achievements_list.append(
 		(name, condition, icon, sound, duration)
 	)
 
 
-def _save_achievements():
-	with open(f'{_path}/achievements.json', 'w', encoding = 'utf-8') as save_file:
-		json.dump({'achievements_got_names': _achievements_got.copy()}, save_file, indent = 2)
-
-
 class Achievement(Entity):
-
 	# Sounds
 	sign = Audio('sounds/sign.wav', autoplay = False, loop = False)
 	sudden = Audio('sounds/sudden.wav', autoplay = False, loop = False)
 	ringing = Audio('sounds/ringing.wav', autoplay = False, loop = False)
 	rising = Audio('sounds/rising.wav', autoplay = False, loop = False)
 	sounds = [sign, sudden, ringing, rising]
-	
+
+	# Colors
 	achievement_color = (64, 64, 64)
 	text_color = (255, 255, 255)
 	icon_color = (255, 255, 255)
@@ -88,6 +107,7 @@ class Achievement(Entity):
 
 		invoke(destroy, self, delay = 5 * duration)
 
+
 def _achievements_update():
 	pop = []
 	for i, achievement in enumerate(_achievements_list):
@@ -110,6 +130,7 @@ def _achievements_update():
 
 	for i in range(len(pop)):
 		_achievements_list.pop(pop[i] - i)
+
 
 Entity(update = _achievements_update)
 
