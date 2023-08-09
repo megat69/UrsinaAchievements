@@ -58,6 +58,16 @@ def create_achievement(
 	)
 
 
+def add_achievement(
+	name: str, icon: Optional[str] = None,
+	sound: Union[Literal["sign", "sudden", "ringing", "rising"], str] = 'sudden',
+	duration: Union[float, int] = 1
+):
+	def wrap(condition):
+		create_achievement(name, condition, icon, sound, duration)
+	return wrap
+
+
 class Achievement(Entity):
 	# Sounds
 	sign = Audio('sounds/sign.wav', autoplay = False, loop = False)
@@ -180,15 +190,20 @@ Entity(update = _achievements_update)
 
 if __name__ == '__main__':
 
-	app = Ursina(borderless = False, fullscreen = True, development_mode = False)
+	app = Ursina()
 
 	do = False
 
-	def cond():
+	"""def cond():
 		global do
 		return do
 
-	create_achievement(name = 'Welcome!', condition = cond, icon = 'textures/confetti.png', sound = 'sudden', duration = 1.5)
+	create_achievement(name = 'Welcome!', condition = cond, icon = 'textures/confetti.png', sound = 'sudden', duration = 1.5)"""
+
+	@add_achievement("Welcome!", "textures/confetti.png", "sudden", 1.5)
+	def condition():
+		global do
+		return do
 
 	def setdo():
 		global do
