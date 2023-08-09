@@ -104,7 +104,7 @@ class Achievement(Entity):
 	def __init__(
 		self, name: str, condition: Callable[[], Optional[bool]], icon: Optional[str] = None,
 		sound: Union[Literal["sign", "sudden", "ringing", "rising"], str] = 'sudden',
-		duration: Union[float, int] = 1
+		duration: Union[float, int] = 1, *_
 	):
 		"""
 		Creates a visual representation of an achievement.
@@ -212,29 +212,23 @@ if __name__ == '__main__':
 
 	app = Ursina()
 
-	do1 = False
-	do2 = False
+	do = False
 
 	def cond():
-		global do1
-		return do1
-
-	create_achievement(name = 'Welcome!', condition = cond, icon = 'textures/confetti.png', sound = 'sudden', duration = 1.5)
-
-	@achievement("Blup!", "textures/bubbles.png", "sign", 1)
-	def condition():
 		global do
 		return do
 
+	create_achievement(name = 'Welcome!', condition = cond, icon = 'textures/confetti.png', sound = 'sudden',
+	                   duration = 1.5, description = 'Launch the game !')
+
+	@achievement("Blup!", "textures/bubbles.png", "sign", 1, hidden = True)
+	def condition():
+		return bool(held_keys["left mouse"])
+
 	@after(1.5)
 	def setdo1():
-		global do1
-		do1 = True
-
-	@after(5)
-	def setdo2():
-		global do2
-		do2 = True
+		global do
+		do = True
 
 	Sky()
 
