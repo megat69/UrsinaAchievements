@@ -60,7 +60,21 @@ class Achievement(Entity):
 	text_color = (255, 255, 255)
 	icon_color = (255, 255, 255)
 
-	def __init__(self, title: str, condition, icon: str = None, sound: str = 'sudden', duration: int = 1):
+	def __init__(
+		self, name: str, condition: Callable[[], Optional[bool]], icon: Optional[str] = None,
+		sound: Union[Literal["sign", "sudden", "ringing", "rising"], str] = 'sudden',
+		duration: Union[float, int] = 1
+	):
+		"""
+		Creates a visual representation of an achievement.
+		:param name: The short name of the achievement.
+		:param condition: The condition for the achievement to be used. This param will not be used.
+		:param icon: A path to the achievement's icon. If None, no icon will appear for the achievement.
+		:param sound: Name of the sound used to signal the achievement get.
+			This could be "ringing", "rising", "sign", "sudden" or the path to a WAV format file.
+		:param duration: How long the achievement should stay on screen. Please note that this is a multiplier, not a value
+			in seconds.
+		"""
 		super().__init__(
 			model = 'quad',
 			origin = (.5, -.5),
@@ -72,7 +86,7 @@ class Achievement(Entity):
 		)
 		# Adding the title
 		self.title = Text(
-			text = title,
+			text = name,
 			wordwrap = 15,
 			position = (-.95, .9),
 			scale = (4, 5.5),
@@ -80,7 +94,7 @@ class Achievement(Entity):
 			parent = self
 		)
 		# Adding the icon if wanted
-		if icon != None:
+		if icon is not None:
 			self.icon = Entity(
 				model = 'quad',
 				texture = icon,
@@ -90,16 +104,16 @@ class Achievement(Entity):
 				parent = self
 			)
 
-		if sound != None:
+		if sound is not None:
 			if sound in Achievement.sounds:
 				Achievement.sounds[sound].play()
 			else:
 				Audio(sound, autoplay = True, loop = False)
 
 		# Animation
-		prevPos = self.position
+		prev_pos = self.position
 		self.position = self.position + Vec2(0, -.2)
-		self.animate_position(prevPos, duration = .4 * duration, curve = curve.out_back)
+		self.animate_position(prev_pos, duration = .4 * duration, curve = curve.out_back)
 		self.animate_color(color.rgba(* Achievement.achievement_color, 0), duration = 1.5 * duration, delay = 2 * duration)
 		self.title.animate_color(color.rgba(* Achievement.text_color, 0), duration = 1.5 * duration, delay = 2 * duration)
 		if icon != None:
