@@ -7,7 +7,10 @@ from collections import namedtuple
 
 _path = os.path.dirname(os.path.abspath(__file__))
 
-_achievement_type = namedtuple("AchievementType", ["name", "condition", "icon", "sound", "duration"])
+_achievement_type = namedtuple(
+	"AchievementType",
+	["name", "condition", "icon", "sound", "duration", "description", "hidden"]
+)
 _achievements_list: List[_achievement_type] = []
 
 try:
@@ -31,7 +34,7 @@ def _save_achievements():
 def create_achievement(
 	name: str, condition: Callable[[], Optional[bool]], icon: Optional[str] = None,
 	sound: Union[Literal["sign", "sudden", "ringing", "rising"], str] = 'sudden',
-	duration: Union[float, int] = 1
+	duration: Union[float, int] = 1, description: str = "", hidden: bool = False
 ):
 	"""
 	Easy way to create an achievement.
@@ -43,25 +46,28 @@ def create_achievement(
 		This could be "ringing", "rising", "sign", "sudden" or the path to a WAV format file.
 	:param duration: How long the achievement should stay on screen. Please note that this is a multiplier, not a value
 		in seconds.
+	:param description: A description of the achievement. Will only be displayed in the menus. Empty by default.
+	:param hidden: Whether the achievement is a hidden achievement. If True, it will not be shown in the menus unless
+		completed previously.
 	"""
 	# Tests that all the types of the arguments are valid, ensuring type safety.
 	if not (
 		isinstance(name, str) and callable(condition) and isinstance(icon, Optional[str]) and
 		(any(sound.endswith(e) for e in ("sign", "sudden", "ringing", "rising")) or sound.lower().endswith(".wav"))
-		and isinstance(duration, Union[float, int])
+		and isinstance(duration, Union[float, int]) and isinstance(description, str) and isinstance(hidden, bool)
 	):
 		raise TypeError("One of the arguments of the function does not have a valid type.")
 
 	# Adds the achievement to the list of achievements
 	_achievements_list.append(
-		_achievement_type(name, condition, icon, sound, duration)
+		_achievement_type(name, condition, icon, sound, duration, description, hidden)
 	)
 
 
 def achievement(
 	name: str, icon: Optional[str] = None,
 	sound: Union[Literal["sign", "sudden", "ringing", "rising"], str] = 'sudden',
-	duration: Union[float, int] = 1
+	duration: Union[float, int] = 1, description: str = "", hidden: bool = False
 ):
 	"""
 	Easy way to create an achievement.
@@ -73,9 +79,12 @@ def achievement(
 		This could be "ringing", "rising", "sign", "sudden" or the path to a WAV format file.
 	:param duration: How long the achievement should stay on screen. Please note that this is a multiplier, not a value
 		in seconds.
+	:param description: A description of the achievement. Will only be displayed in the menus. Empty by default.
+	:param hidden: Whether the achievement is a hidden achievement. If True, it will not be shown in the menus unless
+		completed previously.
 	"""
 	def wrap(condition):
-		create_achievement(name, condition, icon, sound, duration)
+		create_achievement(name, condition, icon, sound, duration, description, hidden)
 	return wrap
 
 
