@@ -42,6 +42,15 @@ def create_achievement(
 	:param duration: How long the achievement should stay on screen. Please note that this is a multiplier, not a value
 		in seconds.
 	"""
+	# Tests that all the types of the arguments are valid, ensuring type safety.
+	if not (
+		isinstance(name, str) and callable(condition) and isinstance(icon, Optional[str]) and
+		(any(sound.endswith(e) for e in ("sign", "sudden", "ringing", "rising")) or sound.lower().endswith(".wav"))
+		and isinstance(duration, Union[float, int])
+	):
+		raise TypeError("One of the arguments of the function does not have a valid type.")
+
+	# Adds the achievement to the list of achievements
 	_achievements_list.append(
 		(name, condition, icon, sound, duration)
 	)
@@ -177,7 +186,7 @@ if __name__ == '__main__':
 		global do
 		return do
 
-	create_achievement(name = 'Welcome!', condition = cond, icon = 'confetti', sound = 'sudden', duration = 1.5)
+	create_achievement(name = 'Welcome!', condition = cond, icon = 'textures/confetti.png', sound = 'sudden', duration = 1.5)
 
 	def setdo():
 		global do
