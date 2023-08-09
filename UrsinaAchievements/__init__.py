@@ -15,11 +15,13 @@ except FileNotFoundError:
 		_achievements_got = []
 		json.dump({'achievements_got_names': []}, save_file, indent = 4)
 
+
 def create_achievement(name: str, condition, icon: str = None, sound: str = 'sudden', duration: int = 1):
 
 	_achievements_list.append(
 		(name, condition, icon, sound, duration)
 	)
+
 
 def _save_achievements():
 	with open(f'{_path}/achievements.json', 'w', encoding = 'utf-8') as save_file:
