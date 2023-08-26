@@ -91,6 +91,48 @@ def achievement(
 	return wrap
 
 
+def delete_achievement(name: str) -> bool:
+	"""
+	Deletes an achievement from the list of achievements AND from the achievements gotten records, then returns
+	whether the achievement had already been triggered.
+	Throws a KeyError if the achievement does not exist.
+	:param name: The name of the achievement to delete.
+	:return: Whether the achievement had already been triggered.
+	"""
+	# Whether the achievement was found
+	found = False
+
+	# Whether the achievement was triggered
+	triggered = False
+
+	# Loops over the list of achievements available
+	for current_achievement in _achievements_list:
+		if current_achievement.name == name:
+			found = True
+			triggered = False
+			_achievements_list.remove(current_achievement)
+			break
+
+	# Loops over the list of achievements already gotten if it was not previously found
+	if not found:
+		for current_achievement in _achievements_got:
+			if current_achievement.name == name:
+				found = True
+				triggered = True
+				_achievements_got.remove(current_achievement)
+				break
+
+	# If the achievement still is not found, we throw a KeyError
+	if not found:
+		raise KeyError(f"Achievement named '{name}' not found.")
+
+	# We save the current list of achievements
+	_save_achievements()
+
+	# Finally, we return whether the achievement had been triggered
+	return triggered
+
+
 class Achievement(Entity):
 	# Sounds
 	sign = Audio('sounds/sign.wav', autoplay = False, loop = False)

@@ -1,6 +1,6 @@
 from ursina import *
 
-from UrsinaAchievements.achievements import create_achievement, achievement, Achievement
+from UrsinaAchievements.achievements import create_achievement, achievement, delete_achievement, Achievement
 
 
 if __name__ == '__main__':
@@ -29,6 +29,14 @@ if __name__ == '__main__':
 	def setdo1():
 		global do
 		do = True
+
+
+	# --- Deleting an achievement ---
+	@achievement("Useless achievement")
+	def useless_achievement():
+		return False
+
+	delete_achievement("Useless achievement")
 
 
 	# Setting up Ursina
