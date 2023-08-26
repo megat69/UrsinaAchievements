@@ -7,6 +7,8 @@ if __name__ == '__main__':
 
 	app = Ursina()
 
+	# --- Classic way to make achievements (deprecated) ---
+
 	do = False
 
 	def cond():
@@ -15,6 +17,9 @@ if __name__ == '__main__':
 
 	create_achievement(name = 'Welcome!', condition = cond, icon = 'textures/confetti.png', sound = 'sudden',
 	                   duration = 1.5, description = 'Launch the game !')
+
+
+	# --- Newer way to make achievements ---
 
 	@achievement("Blup!", "textures/bubbles.png", "sign", 1, hidden = True)
 	def condition():
@@ -25,6 +30,7 @@ if __name__ == '__main__':
 		global do
 		do = True
 
-	Sky()
 
+	# Setting up Ursina
+	Sky()
 	app.run()
