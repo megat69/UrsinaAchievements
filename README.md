@@ -60,4 +60,4 @@ They correspond to a tuple of three integer values.
 - [x] Every frame, each function given for the argument check is tested ; achievement is given if the function tests true
 - [x] All gotten achievements are stored in a JSON file
 - [ ] An HTML file is generated with every achievement you got
-- [ ] The function used for creating the achievements can be used as a decorator
+- [x] The function used for creating the achievements can be used as a decorator
