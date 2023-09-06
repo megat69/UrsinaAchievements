@@ -61,10 +61,12 @@ def create_achievement(
 	):
 		raise TypeError("One of the arguments of the function does not have a valid type.")
 
-	# Adds the achievement to the list of achievements
-	_achievements_list.append(
-		_achievement_type(name, condition, icon, sound, duration, description, hidden)
-	)
+	# Makes sure the achievement name was not already used
+	if name not in _achievements_got:
+		# Adds the achievement to the list of achievements
+		_achievements_list.append(
+			_achievement_type(name, condition, icon, sound, duration, description, hidden)
+		)
 
 
 def achievement(
@@ -116,7 +118,7 @@ def delete_achievement(name: str) -> bool:
 	# Loops over the list of achievements already gotten if it was not previously found
 	if not found:
 		for current_achievement in _achievements_got:
-			if current_achievement.name == name:
+			if current_achievement == name:
 				found = True
 				triggered = True
 				_achievements_got.remove(current_achievement)
