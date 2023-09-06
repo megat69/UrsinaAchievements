@@ -135,6 +135,23 @@ def delete_achievement(name: str) -> bool:
 	return triggered
 
 
+def was_achievement_triggered(name: str) -> bool:
+	"""
+	Returns whether an achievement has already been triggered.
+	:param name: The name of the achievement to look for.
+	:return: Whether the given achievement was triggered.
+	"""
+	if name in (achievement.name for achievement in _achievements_list):
+		triggered = False
+	elif name in _achievements_got:
+		triggered = True
+	else:
+		raise KeyError(f"Achievement named '{name}' not found.")
+
+	return triggered
+
+
+
 class Achievement(Entity):
 	# Sounds
 	sign = Audio('sounds/sign.wav', autoplay = False, loop = False)

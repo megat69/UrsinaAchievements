@@ -1,6 +1,7 @@
 from ursina import *
 
-from UrsinaAchievements.achievements import create_achievement, achievement, delete_achievement, Achievement
+from UrsinaAchievements.achievements import create_achievement, achievement, delete_achievement,\
+	was_achievement_triggered, Achievement
 
 
 if __name__ == '__main__':
@@ -37,6 +38,10 @@ if __name__ == '__main__':
 		return False
 
 	delete_achievement("Useless achievement")
+
+
+	# --- Getting whether an achievement was triggered ---
+	print(was_achievement_triggered("Welcome!"))
 
 
 	# Setting up Ursina
