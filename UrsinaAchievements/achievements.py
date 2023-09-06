@@ -106,16 +106,15 @@ def delete_achievement(name: str) -> bool:
 	triggered = False
 
 	# Loops over the list of achievements available
-	if name in _achievements_list:
-		for current_achievement in _achievements_list:
-			if current_achievement.name == name:
-				found = True
-				triggered = False
-				_achievements_list.remove(current_achievement)
-				break
+	for current_achievement in _achievements_list:
+		if current_achievement.name == name:
+			found = True
+			triggered = False
+			_achievements_list.remove(current_achievement)
+			break
 
 	# Loops over the list of achievements already gotten if it was not previously found
-	if not found and name in _achievements_got:
+	if not found:
 		for current_achievement in _achievements_got:
 			if current_achievement.name == name:
 				found = True
