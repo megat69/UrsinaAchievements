@@ -116,7 +116,7 @@ def delete_achievement(name: str) -> bool:
 			break
 
 	# Loops over the list of achievements already gotten if it was not previously found
-	if not found:
+	if not found and name in _achievements_got:
 		for current_achievement in _achievements_got:
 			if current_achievement == name:
 				found = True
