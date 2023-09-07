@@ -18,10 +18,10 @@ _achievements_list: List[_achievement_type] = []
 
 try:
 	with open(f'{_path}/achievements.json', 'r', encoding = 'utf-8') as save_file:
-		_achievements_got: List[_achievement_type] = json.load(save_file)['achievements_got_names'].copy()
+		_achievements_got: List[str] = json.load(save_file)['achievements_got_names'].copy()
 except FileNotFoundError:
 	with open(f'{_path}/achievements.json', 'w', encoding = 'utf-8') as save_file:
-		_achievements_got: List[_achievement_type] = []
+		_achievements_got: List[str] = []
 		json.dump({'achievements_got_names': []}, save_file, indent = 4)
 
 
