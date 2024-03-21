@@ -185,7 +185,7 @@ class Achievement(Entity):
 			origin = (.5, -.5),
 			position = (.5 * window.aspect_ratio, -.5),
 			scale = (.25, .15),
-			color = color.rgba(*Achievement.achievement_color, 185),
+			color = color.rgba32(*Achievement.achievement_color, 185),
 			parent = camera.ui,
 			always_on_top = True
 		)
@@ -195,7 +195,7 @@ class Achievement(Entity):
 			wordwrap = 15,
 			position = (-.95, .9),
 			scale = (4, 5.5),
-			color = color.rgba(*Achievement.text_color, 255),
+			color = color.rgba32(*Achievement.text_color, 255),
 			parent = self
 		)
 		# Adding the icon if wanted
@@ -205,7 +205,7 @@ class Achievement(Entity):
 				texture = icon,
 				position = (-.5, .3),
 				scale = (.35, .55),
-				color = color.rgba(*Achievement.icon_color, 255),
+				color = color.rgba32(*Achievement.icon_color, 255),
 				parent = self
 			)
 
@@ -220,14 +220,14 @@ class Achievement(Entity):
 		self.position = self.position + Vec2(0, -.2)
 		self.animate_position(prev_pos, duration = .4 * duration, curve = curve.out_back)
 		self.animate_color(
-			color.rgba(*Achievement.achievement_color, 0), duration = 1.5 * duration, delay = 2 * duration
+			color.rgba32(*Achievement.achievement_color, 0), duration = 1.5 * duration, delay = 2 * duration
 		)
 		self.title.animate_color(
-			color.rgba(*Achievement.text_color, 0), duration = 1.5 * duration, delay = 2 * duration
+			color.rgba32(*Achievement.text_color, 0), duration = 1.5 * duration, delay = 2 * duration
 		)
 		if icon is not None:
 			self.icon.animate_color(
-				color.rgba(*Achievement.icon_color, 0), duration = 1.5 * duration, delay = 2 * duration
+				color.rgba32(*Achievement.icon_color, 0), duration = 1.5 * duration, delay = 2 * duration
 			)
 
 		invoke(destroy, self, delay = 5 * duration)
