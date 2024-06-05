@@ -161,9 +161,9 @@ class Achievement(Entity):
 	sounds = [sign, sudden, ringing, rising]
 
 	# Colors
-	achievement_color = (64, 64, 64)
-	text_color = (255, 255, 255)
-	icon_color = (255, 255, 255)
+	achievement_color = Vec3(64, 64, 64)
+	text_color = Vec3(255, 255, 255)
+	icon_color = Vec3(255, 255, 255)
 
 	def __init__(
 		self, name: str, condition: Callable[[], Optional[bool]], icon: Optional[str] = None,
